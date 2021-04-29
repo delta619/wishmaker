@@ -67,17 +67,32 @@ app.use(cors());
 
 app.use(express.urlencoded({ extended: true }));
 
+const fs = require("fs");
 // fetch initial data 
 // const p = new PintDataClass()
+app.use('/api/submit/:identity',(req,res)=>{
+  Hit.update({identity:req.params.identity},{message:req.body.wish}).then(res=>{
+    console.log("message linked with id "+req.param.identity);
+  })
+  res.end()
+})
 app.use('/static', express.static('public'))
 app.get('/',(req,res)=>{
+  identity = uuidv4()
   console.log("Got a hit ### "+ new Date(Date.now() +11*30*60*1000).toUTCString() );
   Hit.create({
     hit:1,
-    identity: uuidv4(),
+    identity: identity,
     timestamp: new Date(Date.now() + 11*30*60*1000)
+  }).then(res=>{
+    console.log("Identity saved");
   })
-  res.sendFile(path.join(__dirname,'public','index.html'))
+
+  let html = fs.readFile(path.join(__dirname,'public','index.html'),'utf-8',(err,data)=>{
+    data = data.replace('{{identity}}',identity)
+    res.send(data)
+  })
+
 })
 
 
