@@ -3,26 +3,15 @@ const dotenv = require('dotenv').config();
 
 const { Server } = require('./app');
 
-console.log(`#${process.env.NODE_ENV}# mode is on`);
-
-if (process.env.NODE_ENV == 'production') {
-  [db, dbServerName] = [
-    process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD),
-    'Production Server',
-  ];
-} else {
-  [db, dbServerName] = [process.env.DATABASE_LOCAL, 'Local'];
-}
-
 mongoose
-  .connect(db, {
+  .connect('mongodb+srv://user:pass@mongo-cluster-wtmmm.mongodb.net/make_a_wish?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
     useUnifiedTopology: true,
   })
   .then((con) => {
-    console.log(`MongoDB connected at ${dbServerName}`);
+    console.log(`MongoDB connected `);
   })
   .catch((err) => {
     throw err;
