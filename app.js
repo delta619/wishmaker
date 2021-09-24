@@ -2,14 +2,9 @@ const express = require('express');
 const { v1:uuidv1,v4: uuidv4 } = require('uuid');
 
 const app = express();
-// const donorRoute = require('./routes/donorRoute');
-// const patietRoute = require('./routes/patientRoute');
-// const adminRoute = require('./routes/adminRoute');
-// const publicRoutes = require('./routes/publicRoute')
 
 const Hit = require('./models/hitModel');
 
-// const globalErrorController = require('./controller/errorController');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
@@ -19,7 +14,6 @@ const hpp = require('hpp');
 const cors = require('cors');
 const path = require('path');
 // GLOBAL
-// const {PintDataClass} = require('./utils/PintDataClass');
 app.use(morgan('dev'));
 // protect
 app.use(helmet());
@@ -69,7 +63,6 @@ app.use(express.urlencoded({ extended: true }));
 
 const fs = require("fs");
 // fetch initial data 
-// const p = new PintDataClass()
 app.use('/api/submit/:identity',(req,res)=>{
   Hit.update({identity:req.params.identity},{message:req.body.wish}).then(res=>{
     console.log("message linked with id "+req.param.identity);
@@ -97,10 +90,6 @@ app.get('/',(req,res)=>{
 
 
 
-// app.use('/api/public', publicRoutes);
-// app.use('/api/donor', donorRoute);
-// app.use('/api/patient', patietRoute);
-// app.use('/api/admin', adminRoute);
 
 
 app.all('*', (req, res, next) => {
